@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadamati DZ - خدمات الجزائر</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 pb-20">
+    <!-- رأس التطبيق -->
+    <header class="bg-gradient-to-r from-blue-900 via-blue-700 to-blue-600 text-white p-5 shadow-lg sticky top-0 z-50 border-b border-blue-400/30">
+        <div class="flex justify-between items-center mb-3">
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="toggleNewUsers()" class="relative bg-red-500 hover:bg-red-600 p-2.5 rounded-2xl text-white transition shadow-md" title="المستخدمون الجدد">
+                    <i class="fa-solid fa-heart text-sm"></i>
+                    <span id="newUsersCount" class="absolute -top-1.5 -right-1.5 bg-white text-red-600 text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-red-500 shadow">0</span>
+                </button>
+                <button onclick="openSettingsModal()" class="relative bg-white/10 hover:bg-white/20 p-2.5 rounded-2xl transition shadow-md border border-white/20" title="الإعدادات">
+                    <i class="fa-solid fa-gear text-sm"></i>
+                </button>
+                <button onclick="toggleMessages()" class="relative bg-white/10 hover:bg-white/20 p-2.5 rounded-2xl transition shadow-md border border-white/20" title="الرسائل">
+                    <i class="fa-solid fa-comment-dots text-sm"></i>
+                    <span class="absolute top-1 right-1 bg-green-400 w-2.5 h-2.5 rounded-full ring-2 ring-blue-800"></span>
+                </button>
+            </div>
+            
+            <div class="flex items-center bg-blue-950/40 px-3 py-1.5 rounded-2xl border border-white/10">
+                <span class="text-xs font-bold ml-1.5">بسكرة، الجزائر</span>
+                <i class="fa-solid fa-location-dot text-red-400 text-xs"></i>
+            </div>
+        </div>
+
+        <!-- اللوقو الجديد والاحترافي -->
+        <div class="flex flex-col items-center text-center my-2">
+            <div class="relative mb-2">
+                <div class="absolute -inset-1 bg-gradient-to-r from-amber-400 to-red-500 rounded-3xl blur opacity-70 animate-pulse"></div>
+                <div class="relative bg-blue-950 p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl flex items-center justify-center">
+                    <i class="fa-solid fa-screwdriver-wrench text-3xl text-amber-400"></i>
+                    <div class="absolute -bottom-1 -right-1 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full border border-white">DZ</div>
+                </div>
+            </div>
+            <h1 class="text-2xl font-black tracking-wider text-white drop-shadow-md">Khadamati DZ</h1>
+            <p class="text-xs font-semibold text-amber-300 tracking-wide mt-0.5">خدماتك المحلية في مكان واحد 🇩🇿</p>
+        </div>
+
+        <!-- شريط البحث الفاخر -->
+        <div class="mt-4 relative">
+            <input type="text" placeholder="واش راك تحتاج اليوم؟ (مثلا: كهربائي، سباك...)" class="w-full bg-white text-gray-800 pr-10 pl-4 py-3 rounded-2xl shadow-inner focus:outline-none placeholder-gray-400 text-xs font-semibold">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-gray-400 text-sm"></i>
+        </div>
+
+        <div class="flex justify-between items-center mt-3 text-xs text-blue-100 px-1">
+            <button onclick="openRoleSelection()" class="bg-white/20 px-3.5 py-1.5 rounded-xl hover:bg-white/30 font-bold transition flex items-center shadow-sm">
+                <i class="fa-solid fa-user-circle ml-1.5"></i> <span id="userStatusText">تسجيل الدخول</span>
+            </button>
+            <span class="text-[11px] text-blue-200">المنصة الرسمية للخدمات</span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="max-w-md mx-auto p-4">
+        <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 mb-4 flex justify-around items-center text-center">
+            <button onclick="openRoleSelection()" class="flex flex-col items-center text-blue-600 hover:text-blue-800">
+                <i class="fa-solid fa-user-gear text-xl mb-1"></i>
+                <span class="text-xs font-bold">إعدادات حسابي</span>
+            </button>
+            <div class="h-8 w-[1px] bg-gray-200"></div>
+            <button onclick="openVerificationModal()" class="flex flex-col items-center text-amber-600 hover:text-amber-700">
+                <i class="fa-solid fa-badge-check text-xl mb-1"></i>
+                <span class="text-xs font-bold">وثق حسابك</span>
+            </button>
+            <div class="h-8 w-[1px] bg-gray-200"></div>
+            <a href="https://wa.me/" target="_blank" class="flex flex-col items-center text-green-600 hover:text-green-700">
+                <i class="fa-brands fa-whatsapp text-xl mb-1"></i>
+                <span class="text-xs font-bold">واتساب الإدارة</span>
+            </a>
+        </div>
+
+        <!-- ركن صاحب التطبيق (بشير طحاش) -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white p-4 rounded-2xl shadow-md mb-6 relative overflow-hidden border border-blue-500/30">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="bg-blue-500 text-xs px-2.5 py-0.5 rounded-full font-bold">مطور التطبيق</span>
+                    <h3 class="text-lg font-bold mt-1">بشير طحاش (Bachir Tahache DZ)</h3>
+                    <p class="text-xs text-blue-200 mt-0.5">تطبيق Khadamati DZ - الإصدار الرسمي</p>
+                </div>
+                <div class="bg-white/10 p-3 rounded-full border border-white/20">
+                    <i class="fa-solid fa-code text-2xl text-amber-300"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-blue-600/50 flex justify-between items-center">
+                <div class="flex space-x-3 space-x-reverse text-sm">
+                    <a href="#" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition"><i class="fa-brands fa-telegram"></i></a>
+                </div>
+                <button onclick="openDeveloperChat()" class="bg-amber-500 hover:bg-amber-600 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center shadow transition">
+                    <i class="fa-solid fa-comments ml-1.5"></i> دردشة مع المطور
+                </button>
+            </div>
+        </div>
+
+        <!-- تصفح الخدمات -->
+        <h2 class="text-md font-bold mb-3 text-gray-700">تصفّح الخدمات</h2>
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-bolt text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">كهربائي</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-faucet text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">سباك</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-mobile-screen text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">هواتف</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-car text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">ميكانيكي</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-paint-roller text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">دهان</span>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border-2 border-red-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-red-500 transition">
+                <i class="fa-solid fa-broom text-red-500 text-2xl mb-2"></i>
+                <span class="text-xs font-bold text-gray-700">تنظيف</span>
+            </div>
+        </div>
+
+        <!-- زر إضافة خدمة -->
+        <button onclick="openRoleSelection()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-md mb-6 transition flex items-center justify-center">
+            <i class="fa-solid fa-plus ml-2"></i> أضف خدمتك أو اطلب خدمة
+        </button>
+
+        <!-- خدمات قريبة منك -->
+        <h2 class="text-md font-bold mb-3 text-gray-700">خدمات قريبة منك</h2>
+        <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="bg-pink-100 text-pink-600 text-[10px] px-2 py-0.5 rounded-full font-bold">كهربائي</span>
+                    <h3 class="font-bold text-sm mt-1">محمد العوني</h3>
+                </div>
+                <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-lg">بسكرة</span>
+            </div>
+            <div class="mt-3 pt-3 border-t border-gray-100 flex justify-between items-center">
+                <span class="text-xs text-green-600 font-bold"><i class="fa-solid fa-circle text-[8px] ml-1"></i> متاح الآن</span>
+                <button class="bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition">تواصل معه</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة اختيار نوع الحساب -->
+    <div id="roleModal" class="fixed inset-0 bg-blue-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-gray-200 text-center">
+            <button onclick="closeRoleSelection()" class="absolute left-4 top-4 text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-lg font-black text-blue-900 mb-2">اختر نوع حسابك</h3>
+            <p class="text-xs text-gray-500 mb-6">كيف ترغب في استخدام تطبيق Khadamati DZ؟</p>
+            
+            <div class="space-y-3">
+                <button onclick="selectRole('زبون')" class="w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-500 text-blue-900 p-4 rounded-2xl flex items-center justify-between transition shadow-sm">
+                    <div class="flex items-center">
+                        <div class="bg-blue-600 text-white p-3 rounded-xl ml-3"><i class="fa-solid fa-user text-lg"></i></div>
+                        <div class="text-right">
+                            <span class="font-bold block text-sm">أنا زبون</span>
+                            <span class="text-[10px] text-gray-500">أبحث عن خدمات منزلية ومحلية</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-blue-500"></i>
+                </button>
+
+                <button onclick="selectRole('مقدم خدمة')" class="w-full bg-amber-50 hover:bg-amber-100 border-2 border-amber-500 text-amber-950 p-4 rounded-2xl flex items-center justify-between transition shadow-sm">
+                    <div class="flex items-center">
+                        <div class="bg-amber-500 text-white p-3 rounded-xl ml-3"><i class="fa-solid fa-briefcase text-lg"></i></div>
+                        <div class="text-right">
+                            <span class="font-bold block text-sm">أنا مقدم خدمة</span>
+                            <span class="text-[10px] text-gray-600">أقدم خدمات وأريد عرض مهاراتي</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-amber-600"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div id="authModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl relative">
+            <button onclick="closeAuthModal()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 id="authTitle" class="text-lg font-bold text-center text-blue-600 mb-4">تسجيل الدخول</h3>
+            <form onsubmit="handleAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">البريد الإلكتروني</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">كلمة المرور</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-xl text-sm shadow hover:bg-blue-700 transition">تأكيد ودخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة الإعدادات مع علامة الاستفهام في دائرة زرقاء -->
+    <div id="settingsModal" class="fixed inset-0 bg-blue-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-indigo-50/95 w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-indigo-200">
+            <button onclick="closeSettingsModal()" class="absolute left-5 top-6 text-indigo-900 hover:text-red-500 transition">
+                <i class="fa-solid fa-xmark text-2xl font-black"></i>
+            </button>
+            <div class="flex justify-center mb-6">
+                <div class="bg-indigo-600 text-white px-8 py-2.5 rounded-2xl shadow-md text-base font-black tracking-wide border border-indigo-400">
+                    الإعدادات
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <button onclick="toggleAudio()" id="audioBtn" class="bg-white p-4 rounded-2xl shadow-sm border border-indigo-100 flex flex-col items-center justify-center hover:bg-indigo-50 transition">
+                    <div class="bg-indigo-600 text-white p-3 rounded-xl mb-2 shadow">
+                        <i id="audioIcon" class="fa-solid fa-volume-high text-lg"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-950">الصوت</span>
+                </button>
+                <button onclick="toggleVibration()" id="vibBtn" class="bg-white p-4 rounded-2xl shadow-sm border border-indigo-100 flex flex-col items-center justify-center hover:bg-indigo-50 transition">
+                    <div class="bg-indigo-600 text-white p-3 rounded-xl mb-2 shadow">
+                        <i id="vibIcon" class="fa-solid fa-mobile-screen-button text-lg"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-950">الاهتزاز</span>
+                </button>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-indigo-100 overflow-hidden divide-y divide-indigo-50">
+                <!-- مركز المساعدة مع علامة الاستفهام داخل دائرة زرقاء -->
+                <button onclick="alert('مرحباً بك في مركز المساعدة لتطبيق Khadamati DZ.')" class="w-full p-3.5 px-4 flex items-center text-right hover:bg-indigo-50/60 transition">
+                    <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center ml-3 shadow-sm">
+                        <i class="fa-solid fa-question text-sm font-bold"></i>
+                    </div>
+                    <span class="text-xs font-bold text-indigo-950">مركز المساعدة</span>
+                </button>
+                <button onclick="alert('شكراً لتقييمك التطبيق بـ 5 نجوم 🌟')" class="w-full p-3.5 px-4 flex items-center text-right hover:bg-indigo-50/60 transition">
+                    <div class="bg-indigo-600 text-white p-2 rounded-xl ml-3 shadow-sm"><i class="fa-solid fa-thumbs-up text-sm"></i></div>
+                    <span class="text-xs font-bold text-indigo-950">قيّمنا</span>
+                </button>
+                <button onclick="alert('سياسة الخصوصية: محمية بالكامل.')" class="w-full p-3.5 px-4 flex items-center text-right hover:bg-indigo-50/60 transition">
+                    <div class="bg-indigo-600 text-white p-2 rounded-xl ml-3 shadow-sm"><i class="fa-solid fa-shield-halved text-sm"></i></div>
+                    <span class="text-xs font-bold text-indigo-950">سياسة الخصوصية</span>
+                </button>
+                <button onclick="alert('شروط الخدمة لـ Khadamati DZ.')" class="w-full p-3.5 px-4 flex items-center text-right hover:bg-indigo-50/60 transition">
+                    <div class="bg-indigo-600 text-white p-2 rounded-xl ml-3 shadow-sm"><i class="fa-solid fa-file-lines text-sm"></i></div>
+                    <span class="text-xs font-bold text-indigo-950">شروط الخدمة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة توثيق الحساب -->
+    <div id="verificationModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeVerificationModal()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-center text-amber-600 mb-2">توثيق الحساب بالعلامة الزرقاء</h3>
+            <p class="text-xs text-gray-500 text-center mb-4">احصل على مصداقية أكبر ودعم كامل بمبلغ رمزي.</p>
+            <div class="space-y-3 text-sm bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4">
+                <div class="font-bold text-blue-900 border-b pb-2">معلومات الدفع البريدي (الجزائر):</div>
+                <div><span class="font-semibold">BaridiMob (Rip):</span> <span class="text-blue-600 font-mono">00799999001234567890</span></div>
+                <div><span class="font-semibold">حساب بريدي جاري (CCP):</span> <span class="text-blue-600 font-mono">12345678 المفتاح 90</span></div>
+                <div><span class="font-semibold">الاسم:</span> بشير طحاش</div>
+            </div>
+            <form onsubmit="submitVerification(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">رقم وصل الدفع / الإيصال</label>
+                    <input type="text" required placeholder="أدخل رقم الإيصال هنا" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none">
+                </div>
+                <button type="submit" class="w-full bg-amber-500 text-blue-950 font-bold py-2.5 rounded-xl text-sm shadow hover:bg-amber-600 transition">إرسال طلب التوثيق</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة المستخدمين الجدد -->
+    <div id="newUsersModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl relative max-h-[80vh] overflow-y-auto">
+            <button onclick="toggleNewUsers()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-center text-red-500 mb-4"><i class="fa-solid fa-heart ml-1"></i> قائمة المستخدمين الجدد</h3>
+            <div id="newUsersList" class="space-y-2">
+                <div class="text-center text-xs text-gray-400 py-4">لا يوجد مستخدمون مسجلون جدد حتى الآن.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة دردشة المطور -->
+    <div id="devChatModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl relative">
+            <button onclick="openDeveloperChat()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-center text-blue-600 mb-2">الدردشة مع المطور</h3>
+            <p class="text-xs text-center text-gray-500 mb-4">تواصل مباشرة مع بشير طحاش بخصوص التطبيق.</p>
+            <div class="bg-gray-100 p-3 rounded-xl h-40 overflow-y-auto mb-3 text-xs flex flex-col space-y-2">
+                <div class="bg-blue-600 text-white p-2 rounded-lg max-w-[80%] self-start">مرحباً بك! أنا المطور بشير طحاش، كيف يمكنني مساعدتك في تطبيق Khadamati DZ؟</div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" placeholder="اكتب رسالتك..." class="flex-1 border rounded-xl px-3 py-2 text-xs focus:outline-none">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الرسائل -->
+    <div id="messagesModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl relative">
+            <button onclick="toggleMessages()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-center text-green-600 mb-4">الرسائل والمحادثات</h3>
+            <div class="space-y-2 text-xs">
+                <div class="p-3 bg-gray-50 rounded-xl border flex justify-between items-center">
+                    <div><span class="font-bold block">إدارة التطبيق</span>مرحباً بك في منصة الخدمات الجزائرية.</div>
+                    <span class="text-[10px] text-gray-400">الآن</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let newUsers = [];
+        let selectedRole = '';
+
+        function openRoleSelection() { document.getElementById('roleModal').classList.remove('hidden'); }
+        function closeRoleSelection() { document.getElementById('roleModal').classList.add('hidden'); }
+
+        function selectRole(role) {
+            selectedRole = role;
+            closeRoleSelection();
+            document.getElementById('authTitle').innerText = `تسجيل حساب (${role})`;
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function openSettingsModal() { document.getElementById('settingsModal').classList.remove('hidden'); }
+        function closeSettingsModal() { document.getElementById('settingsModal').classList.add('hidden'); }
+
+        function openVerificationModal() { document.getElementById('verificationModal').classList.remove('hidden'); }
+        function closeVerificationModal() { document.getElementById('verificationModal').classList.add('hidden'); }
+
+        function toggleNewUsers() { document.getElementById('newUsersModal').classList.toggle('hidden'); }
+        function openDeveloperChat() { document.getElementById('devChatModal').classList.toggle('hidden'); }
+        function toggleMessages() { document.getElementById('messagesModal').classList.toggle('hidden'); }
+
+        function openAuthModal() { openRoleSelection(); }
+        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            newUsers.push(`${email} (${selectedRole})`);
+            document.getElementById('newUsersCount').innerText = newUsers.length;
+            
+            let listHtml = '';
+            newUsers.forEach((usr, idx) => {
+                listHtml += `<div class="p-2.5 bg-red-50 border border-red-100 rounded-xl text-xs flex items-center justify-between">
+                    <span><i class="fa-solid fa-user text-red-500 ml-1.5"></i> ${usr}</span>
+                    <span class="text-[10px] text-gray-400">مستخدم جديد #${idx+1}</span>
+                </div>`;
+            });
+            document.getElementById('newUsersList').innerHTML = listHtml;
+            document.getElementById('userStatusText').innerText = email.split('@')[0];
+            closeAuthModal();
+            alert(`تم تسجيل حسابك بنجاح كـ (${selectedRole})!`);
+        }
+
+        function submitVerification(event) {
+            event.preventDefault();
+            alert('تم إرسال طلب التوثيق ورقم الإيصال بنجاح. ستتم مراجعته قريباً.');
+            closeVerificationModal();
+        }
+    </script>
+</body>
+</html>
